@@ -22,11 +22,14 @@ log = function() {
 
 idSeed = 1;
 
-exports.initializeEntity = function(name) {
-	fakeDatabase[name] = [];
+exports.initializeEntity = function(name, objects) {
+	if (!fakeDatabase[name])
+		fakeDatabase[name] = [];
+	if (objects)
+		fakeDatabase[name] = objects;
 };
 	
-exports.findAll = function(name) {
+exports.findAll = function(name) {	
 	return function(req, res) {
 		res.send(fakeDatabase[name]);
 	}
@@ -37,7 +40,12 @@ exports.findById = function(name) {
 		var id = req.params.id;
 		console.log('Retrieving ' + name + ': ' + id);
 		var found = fakeDatabase[name].filter(equalsId.bind(undefined, id))[0];
-		res.send(found ? found : []);
+		if (found)
+			res.send(found);
+		else {
+			res.status(404);
+			res.end();
+		}
 	}
 };
 
