@@ -5,7 +5,7 @@ var app = express();
  
 app.configure(function () {
 	app.use(allowCrossDomain);
-    app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
+    app.use(express.logger('dev'));
     app.use(express.bodyParser());
 });
 
@@ -18,7 +18,10 @@ function stub(name) {
 	app.get('/' + name, stubGenerator.findAll(name));
 	app.get('/' + name + '/:id', stubGenerator.findById(name));
 	app.post('/' + name, stubGenerator.create(name));
-	app.put('/' + name + '/:id', stubGenerator.update(name));
+
+    var update = stubGenerator.update(name);
+    app.post('/' + name + '/:id', update);
+	app.put('/' + name + '/:id', update);
 	app.delete('/' + name + '/:id', stubGenerator.delete(name));
     entities.push(name);
 }

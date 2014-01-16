@@ -20,8 +20,6 @@ log = function() {
 	console.log(JSON.stringify(fakeDatabase));
 };
 
-idSeed = 1;
-
 exports.initializeEntity = function(name, objects) {
 	if (!fakeDatabase[name])
 		fakeDatabase[name] = [];
@@ -53,7 +51,9 @@ exports.create = function(name) {
 	return function(req, res) {		
 		var entity = req.body;
 		var records = fakeDatabase[name];
-		entity.id = idSeed++;
+		entity.id = records.reduce(function(p, c) {
+			return (c.id && c.id > p) ? c.id : p;
+		}, 0) + 1;
 		console.log('Adding ' + name + ': ' + JSON.stringify(entity));
 		records.push(entity);
 		res.send(entity);
@@ -69,7 +69,7 @@ exports.update = function(name) {
 		var found = fakeDatabase[name].filter(equalsId.bind(undefined, id))[0];
 		for (var k in entity)
 			found[k] = entity[k];
-		res.send(entity);
+		res.send(found);
 	}
 }
  
