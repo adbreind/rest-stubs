@@ -34,8 +34,18 @@ app.get("/stub-*", function(req, res) {
     }
 });
 
-//stubGenerator.initializeEntity("test", [ { id : 1, name : "First Test " } ] );
-//stub("test");
+stubGenerator.initializeEntity("book", [{"title":"Great Expectations","id":"2"},{"title":"Bleak House","id":"4"}]);
+stub("book");
+
+stubGenerator.initializeEntity("contact", [
+            {"first":"Joe","last":"Smith","email":"joe@gmail.com","id":1,
+                company_id:"xyz", lotteryWinner : false },
+            {"first":"Joe2","last":"Smith2","email":"joe2@gmail.com","id":2,
+                company_id:"abc", lotteryWinner : false },
+            {"first":"Joe3","last":"Smith3","email":"joe3@gmail.com","phone":"555-1212",
+                "id":3, company_id:"xyz", lotteryWinner : false}
+        ]);
+stub("contact");
 
 app.listen(3000);
 console.log('Listening on port 3000...');
